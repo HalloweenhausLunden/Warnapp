@@ -14,32 +14,38 @@
       background-position: center;
       background-repeat: no-repeat;
       background-color: #000;
-      color: #fff;
+      height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+    }
+
+    .overlay-box {
+      background-color: rgba(0, 0, 0, 0.7); /* Schwarz-transparent */
+      padding: 40px;
+      border-radius: 12px;
       text-align: center;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
     }
 
     h1 {
       font-size: 3em;
-      color: #ff0; /* leuchtend gelb */
+      color: #ff0; /* Leuchtend gelb */
       margin-bottom: 20px;
       text-shadow: 0 0 10px #ff0;
     }
 
     p {
       font-size: 1.2em;
-      max-width: 600px;
+      color: #fff; /* Weißer Text */
       margin-bottom: 40px;
-      color: #fff;
     }
 
     a button {
-      background-color: #ff0; /* leuchtend gelb */
-      color: #000;
+      background-color: #ff0; /* Leuchtend gelb */
+      color: #000; /* Schwarze Schrift */
       border: none;
       padding: 14px 28px;
       font-size: 1.1em;
@@ -53,15 +59,29 @@
     a button:hover {
       transform: scale(1.05);
     }
+
+    @media only screen and (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      p {
+        font-size: 1em;
+      }
+
+      a button {
+        width: 100%;
+        font-size: 1em;
+        padding: 12px 20px;
+      }
+
+      .overlay-box {
+        padding: 20px;
+        width: 90%;
+      }
+    }
   </style>
 </head>
-<body>
-  <h1>Pandora Warn</h1>
-  <p>Willkommen im digitalen Lagezentrum für die geplante Evakuierung aus Sicherheitsgründen!</p>
-  <a href="index.html">
-    <button>Jetzt Lagezentrum öffnen</button>
-  </a>
-</body>
 <body>
   <div class="overlay-box">
     <h1>Pandora Warn</h1>
