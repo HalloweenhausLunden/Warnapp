@@ -18,6 +18,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
     }
 
     .overlay-box {
@@ -103,50 +104,45 @@
       margin-top: 15px;
     }
 
+    .news-banner {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(to right, #222, #333);
+      overflow: hidden;
+      border-top: 2px solid #444;
+      z-index: 1000;
+    }
+
+    .news-text {
+      display: inline-block;
+      white-space: nowrap;
+      padding: 10px 0;
+      animation: scroll-left 20s linear infinite;
+      font-size: 1rem;
+      color: #f5f5f5;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
     @media only screen and (max-width: 600px) {
-      h1 {
-        font-size: 2em;
-      }
-
-      p, #countdown-label {
-        font-size: 1em;
-      }
-
-      #timer, #infected-count {
-        font-size: 2em;
-      }
-
-      .overlay-box {
-        padding: 20px;
-        width: 90%;
-      }
-
-      button {
-        width: 100%;
-        font-size: 1em;
-        padding: 12px 20px;
-      }
+      h1 { font-size: 2em; }
+      p, #countdown-label { font-size: 1em; }
+      #timer, #infected-count { font-size: 2em; }
+      .overlay-box { padding: 20px; width: 90%; }
+      button { width: 100%; font-size: 1em; padding: 12px 20px; }
     }
   </style>
 </head>
-<div class="news-banner">
-  <div class="news-track">
-    <span>
-      🟡 Sicherheitszone an der Schule am Gehölz errichtet &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-      🟡 Kirche abgeriegelt &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-      🟡 Versorgungspunkt am Sportplatz aktiviert &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-      🟡 Drohnenüberflug im Bereich Lunden-Nord &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-      🟡 Bitte Kohortenbildung einhalten
-    </span>
-  </div>
-</div>
 <body>
   <div class="overlay-box">
     <h1>Pandora Warnmeldung</h1>
     <p>Bewahren Sie Ruhe und informieren Sie sich hier über aktuelle Anweisungen.</p>
 
     <div id="infected-count">🧠 Infizierte in der Nähe: 0</div>
-
     <div id="countdown-label">Wartezeit bis zur nächsten Kohorten - Evakuierung:</div>
     <div id="timer">00:10:00</div>
 
@@ -177,6 +173,13 @@
     <button onclick="closePopup('popup-kohorte')">Verstanden</button>
   </div>
 
+  <!-- Newsband -->
+  <div class="news-banner">
+    <div class="news-text">
+      ⚠️ Stromausfall in Teilen von Lunden – Techniker unterwegs • 🌀 Sturmböen erwartet ab 22 Uhr • 📢 Elternabend verschoben auf Dienstag • 🧣 Halloween-Maze Aufbau beginnt morgen früh • 🚨 Sirenenprobe am Mittwoch um 12 Uhr •
+    </div>
+  </div>
+
   <!-- Sounds -->
   <audio id="busy-sound" src="busy-sound.mp3" preload="auto"></audio>
   <audio id="alert-sound" src="alert-signal.mp3" preload="auto"></audio>
@@ -190,7 +193,6 @@
       document.getElementById(id).style.display = "block";
     }
 
-    // Countdown ab 16:00 Uhr, alle 10 Minuten
     function updateCountdown() {
       const timerElement = document.getElementById("timer");
       const now = new Date();
@@ -210,9 +212,6 @@
       timerElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     }
 
-    setInterval(updateCountdown, 1000);
-
-    // Infizierten-Zähler ab 16:00 Uhr bis 24:00 Uhr
     function updateInfectedCount() {
       const countElement = document.getElementById("infected-count");
       const now = new Date();
@@ -227,28 +226,5 @@
       }
 
       const elapsed = Math.floor((now - start) / 1000);
-      const infected = Math.min(999, Math.floor(elapsed / 30)); // z.B. alle 30 Sek. +1
-      countElement.textContent = `🧠 Infizierte in der Nähe: ${infected}`;
-    }
-
-    setInterval(updateInfectedCount, 1000);
-
-    // Hotline-Button
-    document.getElementById("hotline-button").addEventListener("click", function () {
-      document.getElementById("busy-sound").play();
-      showPopup("popup-hotline");
-    });
-
-    // Infektionsanzeichen-Button
-    document.getElementById("info-button").addEventListener("click", function () {
-      document.getElementById("alert-sound").play();
-      showPopup("popup-symptoms");
-    });
-
-    // Kohorten-Popup alle 30 Sekunden
-    setInterval(function () {
-      showPopup("popup-kohorte");
-    }, 30000);
-  </script>
-</body>
-</html>
+      const infected = Math.min(999, Math.floor(elapsed / 30));
+      countElement.textContent
