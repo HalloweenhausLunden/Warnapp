@@ -47,3 +47,10 @@
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+.news-track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scrollNews 30s linear infinite;
+  will-change: transform;
+  width: fit-content;
+}
