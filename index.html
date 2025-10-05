@@ -1,1 +1,243 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pandora Lagezentrum</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-image: url("zombie-hintergrund.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #000;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
+    .overlay-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #ff0;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #ff0;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #fff;
+      margin-bottom: 30px;
+    }
+
+    #infected-count {
+      font-size: 2em;
+      color: #ff0;
+      margin-bottom: 20px;
+    }
+
+    #countdown-label {
+      font-size: 1.1em;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #ff0;
+      text-shadow: 0 0 8px #ff0;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background-color: #ff0;
+      color: #000;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1.1em;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 0, 0.6);
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .popup {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.85);
+      color: #ff0;
+      padding: 20px;
+      border: 2px solid #ff0;
+      border-radius: 10px;
+      z-index: 999;
+      max-width: 400px;
+      text-align: center;
+      display: none;
+    }
+
+    .popup button {
+      background-color: #ff4444;
+      color: #fff;
+      margin-top: 15px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      p, #countdown-label {
+        font-size: 1em;
+      }
+
+      #timer, #infected-count {
+        font-size: 2em;
+      }
+
+      .overlay-box {
+        padding: 20px;
+        width: 90%;
+      }
+
+      button {
+        width: 100%;
+        font-size: 1em;
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay-box">
+    <h1>Pandora Warnmeldung</h1>
+    <p>Bewahren Sie Ruhe und informieren Sie sich hier über aktuelle Anweisungen.</p>
+
+    <div id="infected-count">🧠 Infizierte in der Nähe: 0</div>
+
+    <div id="countdown-label">Wartezeit bis zur nächsten Kohorten - Evakuierung:</div>
+    <div id="timer">00:10:00</div>
+
+    <button id="hotline-button">📞 Hilfe-Hotline anrufen</button>
+    <button id="info-button">🦠 Infektionsanzeichen</button>
+  </div>
+
+  <!-- Popups -->
+  <div id="popup-hotline" class="popup">
+    <p>📡 Zur Zeit sind alle Leitungen belegt, versuchen Sie es später noch einmal.</p>
+    <button onclick="closePopup('popup-hotline')">Fenster schließen</button>
+  </div>
+
+  <div id="popup-symptoms" class="popup">
+    <h3>Verdächtige Symptome:</h3>
+    <ul style="text-align:left;">
+      <li>⚠️ Leichtes Zittern trotz Wärme</li>
+      <li>🧠 Verlangsamte Sprache & starrer Blick</li>
+      <li>🩸 Blässe oder blutunterlaufene Augen</li>
+      <li>🥩 Starker Hunger</li>
+      <li>🤢 Starke Übelkeit</li>
+    </ul>
+    <button onclick="closePopup('popup-symptoms')">Fenster schließen</button>
+  </div>
+
+  <div id="popup-kohorte" class="popup">
+    <p>📣 Bitte bilden Sie eine Kohorte mit max. 5 Personen!</p>
+    <button onclick="closePopup('popup-kohorte')">Verstanden</button>
+  </div>
+
+  <!-- Sounds -->
+  <audio id="busy-sound" src="busy-sound.mp3" preload="auto"></audio>
+  <audio id="alert-sound" src="alert-signal.mp3" preload="auto"></audio>
+
+  <script>
+    function closePopup(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    function showPopup(id) {
+      document.getElementById(id).style.display = "block";
+    }
+
+    // Countdown ab 16:00 Uhr, alle 10 Minuten
+    function updateCountdown() {
+      const timerElement = document.getElementById("timer");
+      const now = new Date();
+      const start = new Date();
+      start.setHours(16, 0, 0, 0);
+
+      if (now < start) {
+        timerElement.textContent = "⏳ Noch nicht gestartet";
+        return;
+      }
+
+      const elapsed = Math.floor((now - start) / 1000);
+      const remainder = 600 - (elapsed % 600);
+      const minutes = Math.floor(remainder / 60);
+      const seconds = remainder % 60;
+
+      timerElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    }
+
+    setInterval(updateCountdown, 1000);
+
+    // Infizierten-Zähler ab 16:00 Uhr bis 24:00 Uhr
+    function updateInfectedCount() {
+      const countElement = document.getElementById("infected-count");
+      const now = new Date();
+      const start = new Date();
+      start.setHours(16, 0, 0, 0);
+      const end = new Date();
+      end.setHours(24, 0, 0, 0);
+
+      if (now < start) {
+        countElement.textContent = "🧠 Infizierte in der Nähe: 0";
+        return;
+      }
+
+      const elapsed = Math.floor((now - start) / 1000);
+      const infected = Math.min(999, Math.floor(elapsed / 30)); // z.B. alle 30 Sek. +1
+      countElement.textContent = `🧠 Infizierte in der Nähe: ${infected}`;
+    }
+
+    setInterval(updateInfectedCount, 1000);
+
+    // Hotline-Button
+    document.getElementById("hotline-button").addEventListener("click", function () {
+      document.getElementById("busy-sound").play();
+      showPopup("popup-hotline");
+    });
+
+    // Infektionsanzeichen-Button
+    document.getElementById("info-button").addEventListener("click", function () {
+      document.getElementById("alert-sound").play();
+      showPopup("popup-symptoms");
+    });
+
+    // Kohorten-Popup alle 30 Sekunden
+    setInterval(function () {
+      showPopup("popup-kohorte");
+    }, 30000);
+  </script>
+</body>
+</html>
