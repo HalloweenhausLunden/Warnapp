@@ -1,56 +1,138 @@
+/* Grundlayout */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-image: url("zombie-hintergrund.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #000;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Overlay-Box */
 .overlay-box {
-  background-color: rgba(0, 0, 0, 0.7); /* Schwarz mit 70% Deckkraft */
+  background-color: rgba(0, 0, 0, 0.7);
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  text-align: center;
   max-width: 700px;
   margin: auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
 }
+
+/* Titel & Text */
+h1 {
+  font-size: 3em;
+  color: #ff0;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #ff0;
+}
+
+p {
+  font-size: 1.2em;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+/* Infizierten-Zähler & Countdown */
+#infected-count {
+  font-size: 2em;
+  color: #ff0;
+  margin-bottom: 20px;
+}
+
+#countdown-label {
+  font-size: 1.1em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+#timer {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #ff0;
+  text-shadow: 0 0 8px #ff0;
+  margin-bottom: 30px;
+}
+
+/* Buttons */
+button {
+  background-color: #ff0;
+  color: #000;
+  border: none;
+  padding: 14px 28px;
+  font-size: 1.1em;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 0, 0.6);
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Popups */
+.popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #ff0;
+  padding: 20px;
+  border: 2px solid #ff0;
+  border-radius: 10px;
+  z-index: 999;
+  max-width: 400px;
+  text-align: center;
+  display: none;
+}
+
+.popup button {
+  background-color: #ff4444;
+  color: #fff;
+  margin-top: 15px;
+}
+
+/* News-Banner */
 .news-banner {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #fff; /* Weißer Hintergrund */
-  color: #000;
-  font-weight: bold;
-  font-size: 1em;
+  background: linear-gradient(to right, #222, #333);
   overflow: hidden;
+  border-top: 2px solid #444;
   z-index: 1000;
-  border-top: 2px solid #ff0;
-  height: 40px;
-  display: flex;
-  align-items: center;
 }
 
-.news-track {
+.news-text {
   display: inline-block;
   white-space: nowrap;
-  animation: scrollNews 30s linear infinite;
+  padding: 10px 0;
+  animation: scroll-left 20s linear infinite;
+  font-size: 1rem;
+  color: #f5f5f5;
 }
 
-@keyframes scrollNews {
+@keyframes scroll-left {
   0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
 
-.ticker-wrapper {
-  display: flex;
-  width: max-content;
-  animation: scrollTicker 40s linear infinite;
-}
-
-.ticker-content {
-  padding-right: 100px;
-}
-
-@keyframes scrollTicker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.news-track {
-  display: inline-block;
-  white-space: nowrap;
-  animation: scrollNews 30s linear infinite;
-  will-change: transform;
-  width: fit-content;
+/* Responsive Design */
+@media only screen and (max-width: 600px) {
+  h1 { font-size: 2em; }
+  p, #countdown-label { font-size: 1em; }
+  #timer, #infected-count { font-size: 2em; }
+  .overlay-box { padding: 20px; width: 90%; }
+  button { width: 100%; font-size: 1em; padding: 12px 20px; }
 }
