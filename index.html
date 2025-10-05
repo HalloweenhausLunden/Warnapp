@@ -4,138 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pandora Lagezentrum</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", sans-serif;
-      background-image: url("zombie-hintergrund.jpg");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-color: #000;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-
-    .overlay-box {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 40px;
-      border-radius: 12px;
-      text-align: center;
-      max-width: 700px;
-      margin: auto;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-    }
-
-    h1 {
-      font-size: 3em;
-      color: #ff0;
-      margin-bottom: 20px;
-      text-shadow: 0 0 10px #ff0;
-    }
-
-    p {
-      font-size: 1.2em;
-      color: #fff;
-      margin-bottom: 30px;
-    }
-
-    #infected-count {
-      font-size: 2em;
-      color: #ff0;
-      margin-bottom: 20px;
-    }
-
-    #countdown-label {
-      font-size: 1.1em;
-      color: #fff;
-      margin-bottom: 10px;
-    }
-
-    #timer {
-      font-size: 2.5em;
-      font-weight: bold;
-      color: #ff0;
-      text-shadow: 0 0 8px #ff0;
-      margin-bottom: 30px;
-    }
-
-    button {
-      background-color: #ff0;
-      color: #000;
-      border: none;
-      padding: 14px 28px;
-      font-size: 1.1em;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 10px;
-      box-shadow: 0 0 10px rgba(255, 255, 0, 0.6);
-      transition: transform 0.2s ease;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    .popup {
-      position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: rgba(0, 0, 0, 0.85);
-      color: #ff0;
-      padding: 20px;
-      border: 2px solid #ff0;
-      border-radius: 10px;
-      z-index: 999;
-      max-width: 400px;
-      text-align: center;
-      display: none;
-    }
-
-    .popup button {
-      background-color: #ff4444;
-      color: #fff;
-      margin-top: 15px;
-    }
-
-    .news-banner {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: linear-gradient(to right, #222, #333);
-      overflow: hidden;
-      border-top: 2px solid #444;
-      z-index: 1000;
-    }
-
-    .news-text {
-      display: inline-block;
-      white-space: nowrap;
-      padding: 10px 0;
-      animation: scroll-left 20s linear infinite;
-      font-size: 1rem;
-      color: #f5f5f5;
-    }
-
-    @keyframes scroll-left {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    @media only screen and (max-width: 600px) {
-      h1 { font-size: 2em; }
-      p, #countdown-label { font-size: 1em; }
-      #timer, #infected-count { font-size: 2em; }
-      .overlay-box { padding: 20px; width: 90%; }
-      button { width: 100%; font-size: 1em; padding: 12px 20px; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="overlay-box">
@@ -193,6 +62,7 @@
       document.getElementById(id).style.display = "block";
     }
 
+    // Countdown alle 10 Minuten ab 16:00 Uhr
     function updateCountdown() {
       const timerElement = document.getElementById("timer");
       const now = new Date();
@@ -212,6 +82,7 @@
       timerElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     }
 
+    // Infizierten-Zähler ab 16:00 Uhr bis Mitternacht
     function updateInfectedCount() {
       const countElement = document.getElementById("infected-count");
       const now = new Date();
@@ -227,4 +98,28 @@
 
       const elapsed = Math.floor((now - start) / 1000);
       const infected = Math.min(999, Math.floor(elapsed / 30));
-      countElement.textContent
+      countElement.textContent = `🧠 Infizierte in der Nähe: ${infected}`;
+    }
+
+    // Buttons aktivieren
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("hotline-button").addEventListener("click", function () {
+        document.getElementById("busy-sound").play();
+        showPopup("popup-hotline");
+      });
+
+      document.getElementById("info-button").addEventListener("click", function () {
+        document.getElementById("alert-sound").play();
+        showPopup("popup-symptoms");
+      });
+
+      // Wiederholende Updates
+      setInterval(updateCountdown, 1000);
+      setInterval(updateInfectedCount, 1000);
+      setInterval(function () {
+        showPopup("popup-kohorte");
+      }, 30000);
+    });
+  </script>
+</body>
+</html>
