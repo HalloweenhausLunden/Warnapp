@@ -117,7 +117,7 @@ button:hover {
 .news-track {
   display: inline-block;
   white-space: nowrap;
-  animation: ticker-loop 10s linear infinite;
+  animation: ticker-loop 20s linear infinite;
 }
 
 .news-text {
@@ -140,7 +140,7 @@ button:hover {
 /* Animation */
 @keyframes ticker-loop {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-100%); }
 }
 
 /* Responsive Design */
