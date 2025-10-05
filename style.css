@@ -140,7 +140,7 @@ button:hover {
 /* Animation */
 @keyframes ticker-loop {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+  100% { transform: translateX(-75%); }
 }
 
 /* Responsive Design */
