@@ -1,4 +1,4 @@
-/* Grundlayout */
+/* 🌒 Grundlayout */
 body {
   margin: 0;
   padding: 0;
@@ -15,7 +15,7 @@ body {
   flex-direction: column;
 }
 
-/* Overlay-Box */
+/* 🧥 Overlay-Box */
 .overlay-box {
   background-color: rgba(0, 0, 0, 0.7);
   padding: 40px;
@@ -26,7 +26,7 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
 }
 
-/* Titel & Text */
+/* 🕯 Titel & Text */
 h1 {
   font-size: 3em;
   color: #ff0;
@@ -40,7 +40,7 @@ p {
   margin-bottom: 30px;
 }
 
-/* Infizierten-Zähler & Countdown */
+/* 🧠 Infizierten-Zähler & Countdown */
 #infected-count {
   font-size: 2em;
   color: #ff0;
@@ -61,7 +61,7 @@ p {
   margin-bottom: 30px;
 }
 
-/* Buttons */
+/* 🧷 Buttons */
 button {
   background-color: #ff0;
   color: #000;
@@ -80,7 +80,7 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* Popups */
+/* 📦 Popups */
 .popup {
   position: fixed;
   top: 20%;
@@ -103,6 +103,7 @@ button:hover {
   margin-top: 15px;
 }
 
+/* 📣 News-Banner mit nahtlosem Loop */
 .news-banner {
   position: fixed;
   bottom: 0;
@@ -137,13 +138,13 @@ button:hover {
   color: #f5f5f5;
 }
 
-/* Animation */
+/* 🎬 Animation */
 @keyframes ticker-loop {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-/* Responsive Design */
+/* 📱 Responsive Design */
 @media only screen and (max-width: 600px) {
   h1 { font-size: 2em; }
   p, #countdown-label { font-size: 1em; }
@@ -152,4 +153,9 @@ button:hover {
   button { width: 100%; font-size: 1em; padding: 12px 20px; }
   .news-banner { height: 50px; }
   .news-text { font-size: 1.1rem; }
+
+  /* 🐢 Banner langsamer auf Smartphones */
+  .news-track {
+    animation: ticker-loop 45s linear infinite;
+  }
 }
