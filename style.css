@@ -1,1 +1,8 @@
-
+.overlay-box {
+  background-color: rgba(0, 0, 0, 0.7); /* Schwarz mit 70% Deckkraft */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  max-width: 700px;
+  margin: auto;
+}
